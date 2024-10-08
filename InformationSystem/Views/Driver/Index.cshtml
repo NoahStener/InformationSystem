@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Driver>
+
+@{
+    ViewData["Title"] = "Drivers";
+}
+
+<h2>Drivers</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Driver Name</th>
+            <th>Car Registration</th>
+            <th>Note Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var driver in Model)
+        {
+            <tr>
+                <td>@driver.DriverName</td>
+                <td>@driver.CarReg</td>
+                <td>@driver.NoteDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@driver.DriverID">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@driver.DriverID">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@driver.DriverID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create">Create New</a>
+
+
+

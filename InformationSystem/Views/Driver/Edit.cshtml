@@ -1,0 +1,42 @@
+﻿@model Driver
+
+
+<h2>Edit Driver</h2>
+
+<form asp-action="Edit">
+    @Html.AntiForgeryToken()   
+    <input type="hidden" asp-for="DriverID" />
+    
+    <div class="form-group">
+        <label asp-for="DriverName"></label>
+        <input asp-for="DriverName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="CarReg"></label>
+        <input asp-for="CarReg" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="NoteDate"></label>
+        <input asp-for="NoteDate" class="form-control" type="date" />
+    </div>
+    <div class="form-group">
+        <label asp-for="NoteDescription"></label>
+        <input asp-for="NoteDescription" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ResponsibleEmployee"></label>
+        <input asp-for="ResponsibleEmployee" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="AmountOut"></label>
+        <input asp-for="AmountOut" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="AmountIn"></label>
+        <input asp-for="AmountIn" class="form-control" />
+    </div>
+
+    <input type="submit" value="Save" class="btn btn-primary" />
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
