@@ -12,6 +12,7 @@ namespace InformationSystem.Service
         Task AddDriverAsync(Driver driver);
         Task UpdateDriverAsync(Driver driver);
         Task DeleteDriverAsync(int id);
+        Task SearchDriverAsync(string name);
 
     }
 }

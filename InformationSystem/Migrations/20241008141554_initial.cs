@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InformationSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,6 +58,27 @@ namespace InformationSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    EventID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DriverID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.EventID);
+                    table.ForeignKey(
+                        name: "FK_Events_Drivers_DriverID",
+                        column: x => x.DriverID,
+                        principalTable: "Drivers",
+                        principalColumn: "DriverID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -79,23 +100,36 @@ namespace InformationSystem.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "EmployeeID", "Email", "IdentityUserId", "Name", "Password", "Role" },
+                values: new object[] { 1, "Noah.Stener@email.com", null, "Noah", "123456", "Admin" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_IdentityUserId",
                 table: "Employees",
                 column: "IdentityUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_DriverID",
+                table: "Events",
+                column: "DriverID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Drivers");
-
-            migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
+                name: "Events");
+
+            migrationBuilder.DropTable(
                 name: "IdentityUser");
+
+            migrationBuilder.DropTable(
+                name: "Drivers");
         }
     }
 }

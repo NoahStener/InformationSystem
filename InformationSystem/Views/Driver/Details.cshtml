@@ -1,4 +1,4 @@
-﻿@model Driver
+﻿@model DriverDetailsViewModel
 
 @{
     ViewData["Title"] = "Driver Details";
@@ -14,36 +14,68 @@
             Driver Name
         </dt>
         <dd class="col-sm-10">
-            @Model.DriverName
+            @Model.Driver.DriverName
         </dd>
         <dt class="col-sm-2">
             Car Registration
         </dt>
         <dd class="col-sm-10">
-            @Model.CarReg
+            @Model.Driver.CarReg
         </dd>
         <dt class="col-sm-2">
             Note Date
         </dt>
         <dd class="col-sm-10">
-            @Model.NoteDate.ToShortDateString()
+            @Model.Driver.NoteDate.ToShortDateString()
         </dd>
         <dt class="col-sm-2">
             Note Description
         </dt>
         <dd class="col-sm-10">
-            @Model.NoteDescription
+            @Model.Driver.NoteDescription
         </dd>
         <dt class="col-sm-2">
             Responsible Employee
         </dt>
         <dd class="col-sm-10">
-            @Model.ResponsibleEmployee
+            @Model.Driver.ResponsibleEmployee
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.DriverID">Edit</a> |
+    <h3>Driver Events</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model.DriverEvents != null && Model.DriverEvents.Any())
+            {
+                @foreach(var eventItem in Model.DriverEvents)
+                {
+                    <tr>
+                        <td>@eventItem.EventDate.ToShortDateString()</td>
+                        <td>@eventItem.Description</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2">No events found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Driver.DriverID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
 

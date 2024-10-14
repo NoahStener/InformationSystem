@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InformationSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241007120306_Initial")]
-    partial class Initial
+    [Migration("20241008141554_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,6 +93,40 @@ namespace InformationSystem.Migrations
                     b.HasIndex("IdentityUserId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeID = 1,
+                            Email = "Noah.Stener@email.com",
+                            Name = "Noah",
+                            Password = "123456",
+                            Role = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("InformationSystem.Models.Event", b =>
+                {
+                    b.Property<int>("EventID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventID"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DriverID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EventDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("EventID");
+
+                    b.HasIndex("DriverID");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -154,6 +188,17 @@ namespace InformationSystem.Migrations
                         .HasForeignKey("IdentityUserId");
 
                     b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("InformationSystem.Models.Event", b =>
+                {
+                    b.HasOne("InformationSystem.Models.Driver", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
                 });
 #pragma warning restore 612, 618
         }

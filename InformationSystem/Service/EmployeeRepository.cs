@@ -1,32 +1,47 @@
-﻿using InformationSystem.Models;
+﻿using InformationSystem.Data;
+using InformationSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace InformationSystem.Service
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public void AddEmployee(Employee employee)
+        private readonly AppDbContext _context;
+        public EmployeeRepository(AppDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task AddEmployeeAsync(Employee employee)
+        {
+            await _context.Employees.AddAsync(employee);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteEmployee(int id)
+        public async Task DeleteEmployeeAsync(int id)
         {
-            throw new NotImplementedException();
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee != null)
+            {
+                _context.Employees.Remove(employee);
+                await _context.SaveChangesAsync();
+            }
+
         }
 
-        public IEnumerable<Employee> GetAllEmployees()
+        public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Employees.ToListAsync();
         }
 
-        public Employee GetEmployeeById(int id)
+        public async Task<Employee> GetEmployeeByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Employees.FindAsync(id);
         }
 
-        public void UpdateEmployee(Employee employee)
+        public async Task UpdateEmployeeAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            _context.Employees.Update(employee);
+            await _context.SaveChangesAsync();
         }
     }
 }

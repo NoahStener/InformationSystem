@@ -18,6 +18,7 @@ namespace InformationSystem
             
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+            builder.Services.AddScoped<IEventRepository, EventRepository>();
 
             var app = builder.Build();
 

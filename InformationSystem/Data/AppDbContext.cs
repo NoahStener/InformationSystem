@@ -14,6 +14,7 @@ namespace InformationSystem.Data
 
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

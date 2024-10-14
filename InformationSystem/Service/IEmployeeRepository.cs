@@ -5,10 +5,10 @@ namespace InformationSystem.Service
     public interface IEmployeeRepository
     {
         //Crud operations for Employee class
-        IEnumerable<Employee> GetAllEmployees();
-        Employee GetEmployeeById(int id);
-        void AddEmployee(Employee employee);
-        void UpdateEmployee(Employee employee);
-        void DeleteEmployee(int id);
+        Task<IEnumerable<Employee>> GetAllEmployeesAsync();
+        Task<Employee> GetEmployeeByIdAsync(int id);
+        Task AddEmployeeAsync(Employee employee);
+        Task UpdateEmployeeAsync(Employee employee);
+        Task DeleteEmployeeAsync(int id);
     }
 }

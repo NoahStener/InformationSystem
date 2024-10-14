@@ -12,10 +12,10 @@ namespace InformationSystem.Service
             _context = context;
         }
 
-        public Task AddDriverAsync(Driver driver)
+        public async Task AddDriverAsync(Driver driver)
         {
-            _context.Drivers.Add(driver);
-            return _context.SaveChangesAsync();
+            await _context.Drivers.AddAsync(driver);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteDriverAsync(int id)
@@ -36,6 +36,11 @@ namespace InformationSystem.Service
         public async Task<Driver> GetDriverByIdAsync(int id)
         {
             return await _context.Drivers.FindAsync(id);
+        }
+
+        public Task SearchDriverAsync(string name)
+        {
+            throw new NotImplementedException();
         }
 
         public Task UpdateDriverAsync(Driver driver)

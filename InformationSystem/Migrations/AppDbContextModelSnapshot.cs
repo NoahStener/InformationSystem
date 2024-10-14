@@ -90,6 +90,40 @@ namespace InformationSystem.Migrations
                     b.HasIndex("IdentityUserId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeID = 1,
+                            Email = "Noah.Stener@email.com",
+                            Name = "Noah",
+                            Password = "123456",
+                            Role = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("InformationSystem.Models.Event", b =>
+                {
+                    b.Property<int>("EventID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventID"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DriverID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EventDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("EventID");
+
+                    b.HasIndex("DriverID");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -151,6 +185,17 @@ namespace InformationSystem.Migrations
                         .HasForeignKey("IdentityUserId");
 
                     b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("InformationSystem.Models.Event", b =>
+                {
+                    b.HasOne("InformationSystem.Models.Driver", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
                 });
 #pragma warning restore 612, 618
         }

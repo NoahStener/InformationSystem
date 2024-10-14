@@ -1,5 +1,6 @@
 ﻿using InformationSystem.Models;
 using InformationSystem.Service;
+using InformationSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationSystem.Controllers
@@ -7,9 +8,11 @@ namespace InformationSystem.Controllers
     public class DriverController : Controller
     {
         private readonly IDriverRepository _driverRepository;
-        public DriverController(IDriverRepository driverRepository)
+        private readonly IEventRepository _eventRepository;
+        public DriverController(IDriverRepository driverRepository, IEventRepository eventRepository)
         {
             _driverRepository = driverRepository;
+            _eventRepository = eventRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -18,10 +21,36 @@ namespace InformationSystem.Controllers
             return View(drivers);
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id, DateTime? startDate, DateTime? endDate)
         {
-            var driver = await _driverRepository.GetDriverByIdAsync(id);
-            return View(driver);
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var driver = await _driverRepository.GetDriverByIdAsync(id.Value);
+            if (driver == null)
+            {
+                return NotFound();
+            }
+
+            IEnumerable<Event> driverEvents;
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                driverEvents = await _eventRepository.GetEventsByDateRangeAsync(id.Value, startDate.Value, endDate.Value);
+            }
+            else
+            {
+                driverEvents = await _eventRepository.GetEventsForDriverAsync(id.Value);
+            }
+
+            var model = new DriverDetailsViewModel
+            {
+                Driver = driver,
+                DriverEvents = driverEvents
+            };
+
+            return View(model);
         }
 
         public IActionResult Create()
@@ -100,6 +129,19 @@ namespace InformationSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //POST: Driver/AddEvent (Add event to driver)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEvent(int driverId, [Bind("EventDate,Description")] Event newEvent)
+        {
+            if (ModelState.IsValid)
+            {
+                newEvent.DriverID = driverId;
+                await _eventRepository.AddEventAsync(newEvent);
+                return RedirectToAction("Details", new { id = driverId });
+            }
 
+            return View(newEvent);
+        }
     }
 }
