@@ -6,9 +6,9 @@ namespace InformationSystem.Service
     {
         //Crud operations for Employee class
         Task<IEnumerable<Employee>> GetAllEmployeesAsync();
-        Task<Employee> GetEmployeeByIdAsync(int id);
+        Task<Employee> GetEmployeeByIdAsync(string id);
         Task AddEmployeeAsync(Employee employee);
         Task UpdateEmployeeAsync(Employee employee);
-        Task DeleteEmployeeAsync(int id);
+        Task DeleteEmployeeAsync(string id);
     }
 }

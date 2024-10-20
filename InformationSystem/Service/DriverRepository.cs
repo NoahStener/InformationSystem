@@ -38,9 +38,10 @@ namespace InformationSystem.Service
             return await _context.Drivers.FindAsync(id);
         }
 
-        public Task SearchDriverAsync(string name)
+        public async Task<Driver> SearchDriverAsync(string name)
         {
-            throw new NotImplementedException();
+            var driver = await _context.Drivers.FirstOrDefaultAsync(d => d.DriverName.Contains(name));
+            return driver;
         }
 
         public Task UpdateDriverAsync(Driver driver)

@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InformationSystem.Models
 {
-    public class Employee
+    public class Employee : IdentityUser
     {
         [Key]
+        [NotMapped]
         public int EmployeeID { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
-        public IdentityUser IdentityUser { get; set; } //inte säker på om denna prop är nödvändig
     }
 }

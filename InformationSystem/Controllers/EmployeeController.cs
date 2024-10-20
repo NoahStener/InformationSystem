@@ -1,9 +1,11 @@
 ﻿using InformationSystem.Models;
 using InformationSystem.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -18,13 +20,9 @@ namespace InformationSystem.Controllers
             return View(employees);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var employee = await _employeeRepository.GetEmployeeByIdAsync(id.Value);
+            var employee = await _employeeRepository.GetEmployeeByIdAsync(id);
             if (employee == null)
             {
                 return NotFound();
@@ -51,13 +49,9 @@ namespace InformationSystem.Controllers
         }
 
         //Get Employee/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var employee = await _employeeRepository.GetEmployeeByIdAsync(id.Value);
+            var employee = await _employeeRepository.GetEmployeeByIdAsync(id); 
             if (employee == null)
             {
                 return NotFound();
@@ -68,9 +62,9 @@ namespace InformationSystem.Controllers
         //Post Employee/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeID,FirstName,LastName,Email,PhoneNumber,Position")] Employee employee)
+        public async Task<IActionResult> Edit(string id, [Bind("EmployeeID,FirstName,LastName,Email,PhoneNumber,Position")] Employee employee)
         {
-            if (id != employee.EmployeeID)
+            if (id != employee.Id)
             {
                 return NotFound();
             }
@@ -83,13 +77,9 @@ namespace InformationSystem.Controllers
         }
 
         //Get Employee/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var employee = await _employeeRepository.GetEmployeeByIdAsync(id.Value);
+            var employee = await _employeeRepository.GetEmployeeByIdAsync(id); 
             if (employee == null)
             {
                 return NotFound();
@@ -100,7 +90,7 @@ namespace InformationSystem.Controllers
         //Post Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             await _employeeRepository.DeleteEmployeeAsync(id);
             return RedirectToAction(nameof(Index));

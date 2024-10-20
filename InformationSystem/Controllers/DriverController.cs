@@ -1,10 +1,12 @@
 ﻿using InformationSystem.Models;
 using InformationSystem.Service;
 using InformationSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationSystem.Controllers
 {
+    [Authorize(Roles = "Admin, Employee")]
     public class DriverController : Controller
     {
         private readonly IDriverRepository _driverRepository;
@@ -142,6 +144,25 @@ namespace InformationSystem.Controllers
             }
 
             return View(newEvent);
+        }
+
+        //GET: Driver/Search (Search for driver)
+        public IActionResult Search()
+        {
+            return View();
+        }
+
+        //POST: Driver/Search (Search for driver)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(string name)
+        {
+            var driver = await _driverRepository.SearchDriverAsync(name);
+            if (driver == null)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Details", new { id = driver.DriverID });
         }
     }
 }

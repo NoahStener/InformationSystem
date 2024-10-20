@@ -17,7 +17,7 @@ namespace InformationSystem.Service
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteEmployeeAsync(int id)
+        public async Task DeleteEmployeeAsync(string id)
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee != null)
@@ -33,7 +33,7 @@ namespace InformationSystem.Service
             return await _context.Employees.ToListAsync();
         }
 
-        public async Task<Employee> GetEmployeeByIdAsync(int id)
+        public async Task<Employee> GetEmployeeByIdAsync(string id)
         {
             return await _context.Employees.FindAsync(id);
         }
