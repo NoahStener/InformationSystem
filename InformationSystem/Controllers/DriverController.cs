@@ -17,10 +17,26 @@ namespace InformationSystem.Controllers
             _eventRepository = eventRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? fromdate, DateTime? toDate)
         {
             var drivers = await _driverRepository.GetAllDriversAsync();
-            return View(drivers);
+
+            IEnumerable<Event> events = new List<Event>();
+
+            if (fromdate.HasValue && toDate.HasValue)
+            {
+                events = await _eventRepository.GetEventsByDateRangeAsync(null,fromdate.Value, toDate.Value);
+            }
+
+            var model = new DriverEventViewModel
+            {
+                Drivers = drivers,
+                Events = events,
+                FromDate = fromdate,
+                ToDate = toDate
+            };
+
+            return View(model);
         }
 
         public async Task<IActionResult> Details(int? id, DateTime? startDate, DateTime? endDate)
@@ -63,7 +79,7 @@ namespace InformationSystem.Controllers
         //Post: Driver/Create (Create new driver)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DriverID, DriverName, CarReg, NoteDate, NoteDescription, ResponsibleEmployee, AmountOut, AmountIn")] Driver driver)
+        public async Task<IActionResult> Create([Bind("DriverID, DriverName, CarReg, NoteDate, NoteDescription, ResponsibleEmployee")] Driver driver)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +107,7 @@ namespace InformationSystem.Controllers
         //POST: Driver/Edit/5 (Edit driver)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DriverID, DriverName, CarReg, NoteDate, NoteDescription, ResponsibleEmployee, AmountOut, AmountIn")] Driver driver)
+        public async Task<IActionResult> Edit(int id, [Bind("DriverID, DriverName, CarReg, NoteDate, NoteDescription, ResponsibleEmployee")] Driver driver)
         {
             if (id != driver.DriverID)
             {
@@ -131,21 +147,7 @@ namespace InformationSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //POST: Driver/AddEvent (Add event to driver)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEvent(int driverId, [Bind("EventDate,Description")] Event newEvent)
-        {
-            if (ModelState.IsValid)
-            {
-                newEvent.DriverID = driverId;
-                await _eventRepository.AddEventAsync(newEvent);
-                return RedirectToAction("Details", new { id = driverId });
-            }
-
-            return View(newEvent);
-        }
-
+        
         //GET: Driver/Search (Search for driver)
         public IActionResult Search()
         {

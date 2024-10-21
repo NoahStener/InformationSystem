@@ -11,6 +11,12 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            Driver ID
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Driver.DriverID
+        </dd>
+        <dt class="col-sm-2">
             Driver Name
         </dt>
         <dd class="col-sm-10">
@@ -40,6 +46,18 @@
         <dd class="col-sm-10">
             @Model.Driver.ResponsibleEmployee
         </dd>
+        <dt class="col-sm-2">
+            Total Amount In
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Driver.TotalAmountIn
+        </dd>
+        <dt class="col-sm-2">
+            Total Amount Out
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Driver.TotalAmountOut
+        </dd>
     </dl>
 </div>
 
@@ -53,9 +71,9 @@
             </tr>
         </thead>
         <tbody>
-            @if(Model.DriverEvents != null && Model.DriverEvents.Any())
+            @if (Model.DriverEvents != null && Model.DriverEvents.Any())
             {
-                @foreach(var eventItem in Model.DriverEvents)
+                @foreach (var eventItem in Model.DriverEvents)
                 {
                     <tr>
                         <td>@eventItem.EventDate.ToShortDateString()</td>
@@ -76,6 +94,8 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Driver.DriverID">Edit</a> |
     <a asp-action="Index">Back to List</a>
+    <a asp-controller="Event" asp-action="AddEvent" asp-route-driverId="@Model.Driver.DriverID">Add Event</a>
 </div>
+
 
 

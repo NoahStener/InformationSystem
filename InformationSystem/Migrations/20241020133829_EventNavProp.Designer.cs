@@ -4,6 +4,7 @@ using InformationSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InformationSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241020133829_EventNavProp")]
+    partial class EventNavProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,12 @@ namespace InformationSystem.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DriverID"));
+
+                    b.Property<decimal>("AmountIn")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("AmountOut")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CarReg")
                         .HasColumnType("nvarchar(max)");
@@ -63,12 +72,6 @@ namespace InformationSystem.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventID"));
-
-                    b.Property<decimal>("AmountIn")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("AmountOut")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");

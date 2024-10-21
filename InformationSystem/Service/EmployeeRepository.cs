@@ -25,7 +25,6 @@ namespace InformationSystem.Service
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
             }
-
         }
 
         public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()

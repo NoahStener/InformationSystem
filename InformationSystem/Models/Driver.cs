@@ -11,9 +11,10 @@ namespace InformationSystem.Models
         public DateTime NoteDate { get; set; }
         public string NoteDescription { get; set; }
         public string ResponsibleEmployee { get; set; }
-        public decimal AmountOut { get; set; }
-        public decimal AmountIn { get; set; }
         public decimal TotalAmountOut { get; set; }
         public decimal TotalAmountIn { get; set; }
+
+        //nav prop
+        public ICollection <Event> Events { get; set; }
     }
 }

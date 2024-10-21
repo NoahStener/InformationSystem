@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Driver>
+﻿@model DriverEventViewModel
 
 @{
     ViewData["Title"] = "Drivers";
@@ -11,6 +11,44 @@
     <button type="submit" class="btn btn-primary">Search</button>
 </form>
 
+<form asp-action="Index" method="get" class="form-inline mb-3">
+    <input type="date" name="fromDate" class="form-control mr-2" value="@Model.FromDate?.ToString("yyyy-MM-dd")" placeholder="From Date" />
+    <input type="date" name="toDate" class="form-control mr-2" value="@Model.ToDate?.ToString("yyyy-MM-dd")" placeholder="To Date" />
+    <button type="submit" class="btn btn-primary">Filter Events</button>
+</form>
+
+@if (Model.Events.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event Date</th>
+                <th>Description</th>
+                <th>Amount Out</th>
+                <th>Amount In</th>
+                <th>Driver Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Events)
+            {
+                <tr>
+                    <td>@item.EventDate.ToShortDateString()</td>
+                    <td>@item.Description</td>
+                    <td>@item.AmountOut</td>
+                    <td>@item.AmountIn</td>
+                    <td>@item.Driver.DriverName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No events found</p>
+}
+
+
 <table class="table">
     <thead>
         <tr>
@@ -21,7 +59,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var driver in Model)
+        @foreach (var driver in Model.Drivers)
         {
             <tr>
                 <td>@driver.DriverName</td>
