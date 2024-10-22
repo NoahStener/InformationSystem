@@ -1,6 +1,8 @@
 using InformationSystem.Data;
+using InformationSystem.Models;
 using InformationSystem.Service;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace InformationSystem
@@ -13,6 +15,7 @@ namespace InformationSystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -21,10 +24,12 @@ namespace InformationSystem
             builder.Services.AddScoped<IDriverRepository, DriverRepository>();
             builder.Services.AddScoped<IEventRepository, EventRepository>();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultTokenProviders()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
+            
+
+            builder.Services.AddIdentity<Employee, IdentityRole>()
+               .AddEntityFrameworkStores<AppDbContext>()
+               .AddDefaultTokenProviders();
 
             var app = builder.Build();
 

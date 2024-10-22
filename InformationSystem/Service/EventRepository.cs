@@ -44,5 +44,15 @@ namespace InformationSystem.Service
                 .OrderByDescending(e => e.EventDate)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Event>> GetRecentEventsAsync()
+        {
+            var twelveHoursAgo = DateTime.Now.AddHours(-12);
+            return await _context.Events
+                .Include(e => e.Driver)
+                .Where(e => e.EventDate >= twelveHoursAgo)
+                .OrderByDescending(e => e.EventDate)
+                .ToListAsync();
+        }
     }
 }

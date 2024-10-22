@@ -35,18 +35,20 @@ namespace InformationSystem.Controllers
             return View();
         }
 
-        //Post Employee/Create (Create new employee)
+        //Add Employee/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeID,FirstName,LastName,Email,PhoneNumber,Position")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Name,Email,PhoneNumber,Role,Password")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                await _employeeRepository.AddEmployeeAsync(employee);
+                employee.UserName = employee.Email;
+                await _employeeRepository.AddEmployeeAsync(employee, employee.Password);
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
         }
+
 
         //Get Employee/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -62,7 +64,7 @@ namespace InformationSystem.Controllers
         //Post Employee/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("EmployeeID,FirstName,LastName,Email,PhoneNumber,Position")] Employee employee)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Email,PhoneNumber,Role")] Employee employee)
         {
             if (id != employee.Id)
             {

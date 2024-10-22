@@ -6,7 +6,11 @@ namespace InformationSystem.Models
     {
         [Key]
         public int DriverID { get; set; }
+        [Required(ErrorMessage = "Driver Name is Required")]
+        [StringLength(25)]
         public string DriverName { get; set; }
+        [Required]
+        [StringLength(10)]
         public string CarReg { get; set; }
         public DateTime NoteDate { get; set; }
         public string NoteDescription { get; set; }

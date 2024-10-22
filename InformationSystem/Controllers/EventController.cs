@@ -67,6 +67,24 @@ namespace InformationSystem.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Notifications()
+        {
+            var recentEvents = await _eventRepo.GetRecentEventsAsync();
+
+            var model = new NotificationsViewModel
+            {
+                RecentEvents = recentEvents
+            };
+            return View(model);
+        }
+
+        public async Task<int> GetRecentEventCountAsync()
+        {
+            var recentEvents = await _eventRepo.GetRecentEventsAsync();
+            return recentEvents.Count();
+        }
         
+
+
     }
 }
