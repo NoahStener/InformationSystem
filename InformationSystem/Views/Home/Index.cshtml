@@ -2,7 +2,33 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to the Delivery App!</h1>
+    <p class="lead">Your one-stop solution for managing deliveries efficiently and effectively.</p>
+    <hr class="my-4">
+    <p>Use the navigation buttons below to get started with managing employees, drivers, and events.</p>
+    <a class="btn btn-primary btn-lg" href="@Url.Action("Index", "Employee")" role="button">Manage Employees</a>
+    <a class="btn btn-secondary btn-lg" href="@Url.Action("Index", "Driver")" role="button">Manage Drivers</a>
+    <a class="btn btn-success btn-lg" href="@Url.Action("Index", "Event")" role="button">Manage Events</a>
 </div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Employees</h2>
+        <p>Manage your employees, assign roles, and keep track of their information.</p>
+        <a class="btn btn-primary" href="@Url.Action("Index", "Employee")">View Employees &raquo;</a>
+    </div>
+    <div class="col-md-4">
+        <h2>Drivers</h2>
+        <p>Keep track of your drivers, their vehicles, and their delivery schedules.</p>
+        <a class="btn btn-secondary" href="@Url.Action("Index", "Driver")">View Drivers &raquo;</a>
+    </div>
+    <div class="col-md-4">
+        <h2>Events</h2>
+        <p>Monitor delivery events, track progress, and manage delivery notes.</p>
+        <a class="btn btn-success" href="@Url.Action("Index", "Event")">View Events &raquo;</a>
+    </div>
+</div>
+
+
+

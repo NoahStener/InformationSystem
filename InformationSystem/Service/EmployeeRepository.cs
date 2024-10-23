@@ -18,7 +18,7 @@ namespace InformationSystem.Service
         }
         public async Task AddEmployeeAsync(Employee employee, string password)
         {
-            var result = await _userManager.CreateAsync(employee, employee.Password);
+            var result = await _userManager.CreateAsync(employee, password);
             if (result.Succeeded && !string.IsNullOrEmpty(employee.Role))
             {
                 await _userManager.AddToRoleAsync(employee, employee.Role);
@@ -48,8 +48,19 @@ namespace InformationSystem.Service
         public async Task UpdateEmployeeAsync(Employee employee)
         {
             var existingEmployee = await _userManager.FindByIdAsync(employee.Id);
+
             if (existingEmployee != null)
             {
+                if (existingEmployee.Email != employee.Email)
+                {
+                    var emailExists = await _userManager.FindByEmailAsync(employee.Email);
+                    if (emailExists != null && emailExists.Id != employee.Id)
+                    {
+                        throw new InvalidOperationException("Email is already taken");
+                    }
+
+                }
+
                 existingEmployee.Name = employee.Name;
                 existingEmployee.Email = employee.Email;
                 existingEmployee.UserName = employee.Email;

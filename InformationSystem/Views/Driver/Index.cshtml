@@ -4,78 +4,86 @@
     ViewData["Title"] = "Drivers";
 }
 
-<h2>Drivers</h2>
+<h2 class="text-center">@ViewData["Title"]</h2>
 
-<form asp-action="Search" method="post" class="form-inline mb-3">
-    <input type="text" name="name" class="form-control mr-2" placeholder="Search for driver" />
-    <button type="submit" class="btn btn-primary">Search</button>
-</form>
+<div class="container mt-4">
+    <form asp-action="Search" method="post" class="form-inline mb-3 justify-content-center">
+        <input type="text" name="name" class="form-control mr-2" placeholder="Search for driver" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 
-<form asp-action="Index" method="get" class="form-inline mb-3">
-    <input type="date" name="fromDate" class="form-control mr-2" value="@Model.FromDate?.ToString("yyyy-MM-dd")" placeholder="From Date" />
-    <input type="date" name="toDate" class="form-control mr-2" value="@Model.ToDate?.ToString("yyyy-MM-dd")" placeholder="To Date" />
-    <button type="submit" class="btn btn-primary">Filter Events</button>
-</form>
+    <form asp-action="Index" method="get" class="form-inline mb-3 justify-content-center">
+        <input type="date" name="fromDate" class="form-control mr-2" value="@Model.FromDate?.ToString("yyyy-MM-dd")" placeholder="From Date" />
+        <input type="date" name="toDate" class="form-control mr-2" value="@Model.ToDate?.ToString("yyyy-MM-dd")" placeholder="To Date" />
+        <button type="submit" class="btn btn-primary">Filter Events</button>
+    </form>
 
-@if (Model.Events.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Event Date</th>
-                <th>Description</th>
-                <th>Amount Out</th>
-                <th>Amount In</th>
-                <th>Driver Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Events)
-            {
+    @if (Model.Events.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Event Date</th>
+                        <th>Description</th>
+                        <th>Amount Out</th>
+                        <th>Amount In</th>
+                        <th>Driver Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Events)
+                    {
+                        <tr>
+                            <td>@item.EventDate.ToShortDateString()</td>
+                            <td>@item.Description</td>
+                            <td>@item.AmountOut</td>
+                            <td>@item.AmountIn</td>
+                            <td>@item.Driver.DriverName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-center">No events found</p>
+    }
+
+    <div class="table-responsive mt-4">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
                 <tr>
-                    <td>@item.EventDate.ToShortDateString()</td>
-                    <td>@item.Description</td>
-                    <td>@item.AmountOut</td>
-                    <td>@item.AmountIn</td>
-                    <td>@item.Driver.DriverName</td>
+                    <th>Driver Name</th>
+                    <th>Car Registration</th>
+                    <th>Note Date</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No events found</p>
-}
+            </thead>
+            <tbody>
+                @foreach (var driver in Model.Drivers)
+                {
+                    <tr>
+                        <td>@driver.DriverName</td>
+                        <td>@driver.CarReg</td>
+                        <td>@driver.NoteDate.ToShortDateString()</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@driver.DriverID" class="btn btn-info btn-sm">Details</a>
+                            <a asp-action="Edit" asp-route-id="@driver.DriverID" class="btn btn-warning btn-sm">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@driver.DriverID" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
+    <div class="text-center mt-4">
+        <a asp-action="Create" class="btn btn-success">Add Driver to System</a>
+    </div>
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Driver Name</th>
-            <th>Car Registration</th>
-            <th>Note Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var driver in Model.Drivers)
-        {
-            <tr>
-                <td>@driver.DriverName</td>
-                <td>@driver.CarReg</td>
-                <td>@driver.NoteDate.ToShortDateString()</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@driver.DriverID">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@driver.DriverID">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@driver.DriverID">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<a asp-action="Create">Create New</a>
 
 
 
