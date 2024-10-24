@@ -4,7 +4,7 @@ namespace InformationSystem.Service
 {
     public interface IEventRepository
     {
-        Task<IEnumerable<Event>> GetRecentEventsAsync();
+        Task<IEnumerable<Event>> GetEventsWithinTimeSpanAsync(TimeSpan timeSpan);
         Task<IEnumerable<Event>> GetAllEventsAsync();
         Task<IEnumerable<Event>> GetEventsForDriverAsync(int driverId);
         Task AddEventAsync(Event newEvent);

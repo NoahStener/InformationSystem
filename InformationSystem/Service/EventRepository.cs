@@ -45,12 +45,12 @@ namespace InformationSystem.Service
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Event>> GetRecentEventsAsync()
+        public async Task<IEnumerable<Event>> GetEventsWithinTimeSpanAsync(TimeSpan timeSpan)
         {
-            var twelveHoursAgo = DateTime.Now.AddHours(-12);
+            var fromtTime = DateTime.Now.Subtract(timeSpan);
             return await _context.Events
                 .Include(e => e.Driver)
-                .Where(e => e.EventDate >= twelveHoursAgo)
+                .Where(e => e.EventDate >= fromtTime)
                 .OrderByDescending(e => e.EventDate)
                 .ToListAsync();
         }

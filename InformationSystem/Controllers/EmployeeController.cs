@@ -1,6 +1,8 @@
 ﻿using InformationSystem.Models;
 using InformationSystem.Service;
+using InformationSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformationSystem.Controllers
@@ -9,12 +11,13 @@ namespace InformationSystem.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+
         public EmployeeController(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
         }
 
-        public async Task <IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var employees = await _employeeRepository.GetAllEmployeesAsync();
             return View(employees);
@@ -38,22 +41,39 @@ namespace InformationSystem.Controllers
         //Add Employee/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Email,PhoneNumber,Role,Password")] Employee employee)
+        public async Task<IActionResult> Create(EmployeeViewModel model)
         {
             if (ModelState.IsValid)
             {
-                employee.UserName = employee.Email;
-                await _employeeRepository.AddEmployeeAsync(employee, employee.Password);
+                var employee = new Employee
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Name = model.Name,
+                    PhoneNumber = model.PhoneNumber,
+                    Role = model.Role
+                };
+
+                await _employeeRepository.AddEmployeeAsync(employee);
                 return RedirectToAction(nameof(Index));
+
+
+                //if (ModelState.IsValid)
+                //{
+                //    employee.UserName = employee.Email;
+                //    await _employeeRepository.AddEmployeeAsync(employee);
+                //    return RedirectToAction(nameof(Index));
+                //}
+                //return View(employee);
             }
-            return View(employee);
+            return View(model);
         }
 
 
         //Get Employee/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            var employee = await _employeeRepository.GetEmployeeByIdAsync(id); 
+            var employee = await _employeeRepository.GetEmployeeByIdAsync(id);
             if (employee == null)
             {
                 return NotFound();
@@ -81,7 +101,7 @@ namespace InformationSystem.Controllers
         //Get Employee/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            var employee = await _employeeRepository.GetEmployeeByIdAsync(id); 
+            var employee = await _employeeRepository.GetEmployeeByIdAsync(id);
             if (employee == null)
             {
                 return NotFound();
@@ -99,3 +119,4 @@ namespace InformationSystem.Controllers
         }
     }
 }
+

@@ -69,7 +69,7 @@ namespace InformationSystem.Controllers
 
         public async Task<IActionResult> Notifications()
         {
-            var recentEvents = await _eventRepo.GetRecentEventsAsync();
+            var recentEvents = await _eventRepo.GetEventsWithinTimeSpanAsync(User.IsInRole("Admin") ? TimeSpan.FromHours(24) : TimeSpan.FromHours(12));
 
             var model = new NotificationsViewModel
             {
@@ -78,13 +78,8 @@ namespace InformationSystem.Controllers
             return View(model);
         }
 
-        public async Task<int> GetRecentEventCountAsync()
-        {
-            var recentEvents = await _eventRepo.GetRecentEventsAsync();
-            return recentEvents.Count();
-        }
-        
 
-
+    
+       
     }
 }

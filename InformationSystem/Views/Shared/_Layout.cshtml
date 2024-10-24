@@ -33,16 +33,26 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin History</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Notifications">Events Within 24 Hours
+                                    (@await Component.InvokeAsync("AdminEventCount"))
+                                </a>
+                            </li>
+
                         }
                         @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Driver" asp-action="Index">Driver</a>
                             </li>
+                            
+                        }
+                        @if(User.IsInRole("Employee"))
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Notifications">
                                     View Recent Events
-                                    (@await Component.InvokeAsync("RecentEventCount"))
+                                    (@await Component.InvokeAsync("EmployeeEventCount"))
                                 </a>
                             </li>
                         }

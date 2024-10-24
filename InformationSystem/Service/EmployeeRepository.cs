@@ -16,9 +16,9 @@ namespace InformationSystem.Service
             _roleManager = roleManager;
             _context = context;
         }
-        public async Task AddEmployeeAsync(Employee employee, string password)
+        public async Task AddEmployeeAsync(Employee employee)
         {
-            var result = await _userManager.CreateAsync(employee, password);
+            var result = await _userManager.CreateAsync(employee);
             if (result.Succeeded && !string.IsNullOrEmpty(employee.Role))
             {
                 await _userManager.AddToRoleAsync(employee, employee.Role);
