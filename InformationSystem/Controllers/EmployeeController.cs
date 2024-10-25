@@ -51,7 +51,8 @@ namespace InformationSystem.Controllers
                     Email = model.Email,
                     Name = model.Name,
                     PhoneNumber = model.PhoneNumber,
-                    Role = model.Role
+                    Role = model.Role,
+                    Password = model.Password
                 };
 
                 await _employeeRepository.AddEmployeeAsync(employee);

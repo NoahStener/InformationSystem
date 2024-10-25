@@ -18,9 +18,13 @@ namespace InformationSystem.Service
         }
         public async Task AddEmployeeAsync(Employee employee)
         {
-            var result = await _userManager.CreateAsync(employee);
+            var result = await _userManager.CreateAsync(employee, employee.Password);
             if (result.Succeeded && !string.IsNullOrEmpty(employee.Role))
             {
+                if(!await _roleManager.RoleExistsAsync(employee.Role))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(employee.Role));
+                }
                 await _userManager.AddToRoleAsync(employee, employee.Role);
             }
         }
@@ -44,6 +48,8 @@ namespace InformationSystem.Service
         {
             return await _userManager.FindByIdAsync(id);
         }
+
+
 
         public async Task UpdateEmployeeAsync(Employee employee)
         {
